@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:context=".bottomNavFragment">
+
+        <ImageButton
+            android:id="@+id/playlist_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:contentDescription="@string/playlist_menu_button"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:srcCompat="@drawable/ic_baseline_playlist_play_36"
+            tools:src="@drawable/ic_baseline_playlist_play_36" />
+
+        <ImageButton
+            android:id="@+id/music_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:contentDescription="@string/music_menu_button"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:srcCompat="@drawable/ic_baseline_library_music_36" />
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:contentDescription="@string/search_menu_button"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:srcCompat="@drawable/ic_baseline_search_36" />
+
+    </LinearLayout>
+</layout>
