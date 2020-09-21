@@ -1,5 +1,6 @@
 package com.example.jackdaw
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -19,6 +20,15 @@ class MainActivity : AppCompatActivity() {
 
         @Suppress("UNUSED_VARIABLE")
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+
+        val retrieveAllSongs: RetrieveAllSongs = RetrieveAllSongs()
+
+        val allsongs = retrieveAllSongs.retrieveAllSongs(this)
+
+        for(songs in allsongs)
+        {
+            Log.d("Songs", songs)
+        }
 
     }
 }
