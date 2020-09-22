@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,20 +16,25 @@ import kotlinx.android.synthetic.main.fragment_bottom_nav.*
 
 class MainActivity : AppCompatActivity() {
 
+    val retrieveAllSongs: RetrieveAllSongs = RetrieveAllSongs()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         @Suppress("UNUSED_VARIABLE")
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        val retrieveAllSongs: RetrieveAllSongs = RetrieveAllSongs()
 
+        retrieveAllSongs.retrieveAllSongs(this)
         val allsongs = retrieveAllSongs.retrieveAllSongs(this)
 
-        for(songs in allsongs)
+        for(songs in retrieveAllSongs.getAllSongsNames())
         {
             Log.d("Songs", songs)
         }
+    }
 
+    public fun getAllSongUriMain(): ArrayList<Uri> {
+        return retrieveAllSongs.getAllSongsURI()
     }
 }

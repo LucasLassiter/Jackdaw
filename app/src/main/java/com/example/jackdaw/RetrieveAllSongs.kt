@@ -1,16 +1,21 @@
 package com.example.jackdaw
 
+import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import java.net.URI
 import java.util.concurrent.TimeUnit
 
 
 class RetrieveAllSongs {
 
-    public fun retrieveAllSongs(context: Context): ArrayList<String> {
-        val audioList: ArrayList<String> = ArrayList()
+    val audioList: ArrayList<String> = ArrayList()
+    val audioListUri: ArrayList<Uri> = ArrayList()
+
+    public fun retrieveAllSongs(context: Context) {
 
         val audioURI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -28,32 +33,48 @@ class RetrieveAllSongs {
 
         val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
 
-        val audioCursor: Cursor? = context.contentResolver.query(
+        val query = context.contentResolver.query(
             audioURI,
             projection,
             null,
             null,
-            sortOrder
+            null
         )
 
-        if(audioCursor != null)
-        {
-            Log.d("Errors", "0")
-            if(audioCursor.moveToFirst())
+
+        query?.use{cursor ->
+            // Cache column indicies
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
+            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+            val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
+
+
+            while (cursor.moveToNext())
             {
-                Log.d("Errors", "1")
-                do{
-                    Log.d("Errors", "2")
-                    val audioIndex = audioCursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
-                    Log.d("Errors", "3")
-                    audioList.add(audioCursor.getString(audioIndex))
-                    Log.d("Errors", "4")
-                }while(audioCursor.moveToNext())
+                // Get values of columns for a given video
+                val id = cursor.getLong(idColumn)
+                val name = cursor.getString(nameColumn)
+                val duration = cursor.getInt(durationColumn)
+                val size = cursor.getInt(sizeColumn)
+
+
+                val contextUri: Uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id)
+
+                // Stores column values and the contentUri in a local object
+                // that represents the media file.
+                audioList += name
+                audioListUri += contextUri
+
             }
         }
+    }
 
-        audioCursor?.close()
+    public fun getAllSongsURI(): ArrayList<Uri> {
+        return audioListUri
+    }
 
+    public fun getAllSongsNames(): ArrayList<String> {
         return audioList
     }
 }

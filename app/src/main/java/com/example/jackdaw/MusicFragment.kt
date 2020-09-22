@@ -2,6 +2,7 @@ package com.example.jackdaw
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit
 
 class MusicFragment : Fragment() {
     var player: MediaPlayer? = null
+    var retrieveAllSongs: RetrieveAllSongs = RetrieveAllSongs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,12 +35,13 @@ class MusicFragment : Fragment() {
             false
         )
 
-
         binding.playPauseImageButton.setOnClickListener { playPauseButton(
             binding.playPauseImageButton,
             binding
         ) }
         player?.duration
+
+        context?.let { retrieveAllSongs.retrieveAllSongs(it) }
         
         return binding.root
     }
@@ -47,10 +50,16 @@ class MusicFragment : Fragment() {
     {
         if (player == null)
         {
-            player = MediaPlayer.create(context, R.raw.sales_renee)
+            Log.d("Errors", "0")
+            Log.d("Errors", retrieveAllSongs.getAllSongsNames()[0])
+            Log.d("Errors", retrieveAllSongs.getAllSongsNames()[0] )
+            player = MediaPlayer.create(context, retrieveAllSongs.getAllSongsURI()[0])
+            Log.d("Errors", "1")
 
             val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(player!!.duration.toLong())
             val seconds = TimeUnit.MILLISECONDS.toSeconds(player!!.duration.toLong()) % 60
+
+            Log.d("Errors", "2")
 
             if (minutes < 9)
             {
