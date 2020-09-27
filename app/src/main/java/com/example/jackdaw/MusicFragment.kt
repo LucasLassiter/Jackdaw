@@ -56,7 +56,7 @@ class MusicFragment : Fragment() {
     {
         if (player == null)
         {
-            currentSongIndex = 6
+            currentSongIndex = 0
             // Create MediaPlayer
             player = MediaPlayer.create(context, retrieveAllSongs.getAllSongsURI()[currentSongIndex])
 

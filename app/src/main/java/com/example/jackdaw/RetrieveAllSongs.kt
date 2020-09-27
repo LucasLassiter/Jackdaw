@@ -45,7 +45,6 @@ class RetrieveAllSongs {
             val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
             val sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
 
-
             while (cursor.moveToNext()) {
 
                 // Get values of columns for a given video

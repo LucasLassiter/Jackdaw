@@ -27,9 +27,7 @@ class MainActivity : AppCompatActivity() {
         @Suppress("UNUSED_VARIABLE")
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-
         retrieveAllSongs.retrieveAllSongs(this)
-        val allsongs = retrieveAllSongs.retrieveAllSongs(this)
 
         Log.d("Songs", retrieveAllSongs.getAllSongsNames().size.toString())
 
