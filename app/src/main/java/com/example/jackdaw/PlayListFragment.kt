@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jackdaw.databinding.FragmentMusicBinding
 import com.example.jackdaw.databinding.FragmentPlayListBinding
+import kotlinx.android.synthetic.main.fragment_play_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +37,15 @@ class PlayListFragment : Fragment() {
             container,
             false
         )
+
+        var playlistsList = mutableListOf(
+            Playlists("All songs", "64 Songs"),
+            Playlists("Better Songs", "43 Songs")
+        )
+
+        val adapter = PlaylistAdapter(playlistsList)
+        binding.playlistsRecyclerview.adapter = adapter
+        binding.playlistsRecyclerview.layoutManager = LinearLayoutManager(context)
 
         return binding.root
     }

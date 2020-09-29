@@ -3,19 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
     app:startDestination="@id/playListFragment">
     <fragment
+        android:id="@+id/playListFragment"
+        android:name="com.example.jackdaw.PlayListFragment"
+        android:label="PlayListFragment" />
+    <fragment
         android:id="@+id/musicFragment"
         android:name="com.example.jackdaw.MusicFragment"
         android:label="MusicFragment" />
-    <fragment
-        android:id="@+id/bottomNavFragment"
-        android:name="com.example.jackdaw.BottomNavFragment"
-        android:label="BottomNavFragment" />
-    <fragment
-        android:id="@+id/playListFragment"
-        android:name="com.example.jackdaw.PlayListFragment"
-        android:label="PlayListFragment" >
-        <action
-            android:id="@+id/action_playListFragment_to_musicFragment"
-            app:destination="@id/musicFragment" />
-    </fragment>
 </navigation>

@@ -56,7 +56,7 @@ class MusicFragment : Fragment() {
     {
         if (player == null)
         {
-            currentSongIndex = 0
+            currentSongIndex = 6
             // Create MediaPlayer
             player = MediaPlayer.create(context, retrieveAllSongs.getAllSongsURI()[currentSongIndex])
 
@@ -85,15 +85,20 @@ class MusicFragment : Fragment() {
         binding.musicNameTextView.text = retrieveAllSongs.getAllSongsNames()[currentSongIndex]
 
         val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(player!!.duration.toLong())
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(player!!.duration.toLong()) % 60
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(player!!.duration.toLong()) % 60 
 
-        if (minutes < 9)
-        {
-            binding.songDurationTextView.text = "0" + minutes.toString() + ":" + seconds.toString()
+        var tempTime = if (minutes < 9) {
+            "0" + minutes.toString() + ":"
+        } else {
+            minutes.toString() + ":"
         }
-        else
-        {
-            binding.songDurationTextView.text = minutes.toString() + ":" + seconds.toString()
+
+        tempTime = if (seconds < 9) {
+            tempTime + "0" + seconds.toString()
+        } else {
+            tempTime + seconds.toString()
         }
+        binding.songDurationTextView.text = tempTime
+
     }
 }

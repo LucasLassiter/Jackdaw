@@ -27,7 +27,7 @@ class BottomNavFragment : Fragment() {
 
         binding.playlistButton.setOnClickListener { view: View ->
             Log.d("Error", "0")
-            Navigation.findNavController(view).navigate(R.id.action_playListFragment_to_musicFragment)
+            //Navigation.findNavController(view).navigate(R.id.action_musicFragment_to_playListFragment2)
         }
 
         return binding.root
