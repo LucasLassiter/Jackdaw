@@ -13,12 +13,11 @@ class PagerAdapter(fm: FragmentManager, numOfTabs: Int) : FragmentPagerAdapter(f
     }
 
     override fun getItem(position: Int): Fragment {
-        when(position)
-        {
-            0 -> return  PlayListFragment()
-            1 -> return MusicFragment()
-            2 -> return SearchFragment()
-            else -> return null!!
+        return when(position) {
+            0 -> PlayListFragment()
+            1 -> MusicHolderFragment()
+            2 -> SearchFragment()
+            else -> null!!
         }
     }
 }

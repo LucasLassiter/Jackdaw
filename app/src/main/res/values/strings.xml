@@ -19,4 +19,5 @@
     <string name="Create_a_new_playlist">Create a new playlist</string>
     <string name="playlist_title">Playlists</string>
     <string name="playlist_album_art">Playlist album art</string>
+    <string name="Slide_down">Slide down</string>
 </resources>

@@ -29,10 +29,5 @@ class MainActivity : AppCompatActivity() {
         binding.tabBar.getTabAt(1)?.setIcon(R.drawable.ic_baseline_library_music_36)
         binding.tabBar.getTabAt(2)?.setIcon(R.drawable.ic_baseline_search_36)
         binding.viewPager.currentItem = 1
-
-//        binding.tabBar.addOnTabSelectedListener(binding.tabBar.addOnTabSelectedListener()
-//        {
-//
-//        })
     }
 }
