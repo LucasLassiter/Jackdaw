@@ -12,7 +12,6 @@
     <string name="skip_next">Skip Next</string>
     <string name="shuffle_songs">shuffle songs</string>
     <string name="loop_current_song">loop current song</string>
-    <string name="_00_00">00:00</string>
     <string name="playlist_name">Playlist Name</string>
     <string name="_64_songs">64 songs</string>
     <string name="menu_button">menu button</string>
@@ -20,4 +19,6 @@
     <string name="playlist_title">Playlists</string>
     <string name="playlist_album_art">Playlist album art</string>
     <string name="Slide_down">Slide down</string>
+    <string name="song_name">Song name</string>
+    <string name="_00_00">00:00</string>
 </resources>

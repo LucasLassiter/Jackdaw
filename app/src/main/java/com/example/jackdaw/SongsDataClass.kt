@@ -1,6 +1,6 @@
 package com.example.jackdaw
 
-data class SongsDataClass (
+data class SongsDataClass(
     var name: String,
-    var total: Int
+    var duration: Int
 )

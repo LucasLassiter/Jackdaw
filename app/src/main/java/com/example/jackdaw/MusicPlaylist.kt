@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jackdaw.databinding.FragmentMusicBinding
 import com.example.jackdaw.databinding.FragmentMusicPlaylistBinding
 
@@ -23,6 +24,14 @@ class MusicPlaylist : Fragment() {
             container,
             false
         )
+
+        var musicList = mutableListOf(
+            SongsDataClass("Dramamine", 4)
+        )
+
+        val adapter = SongAdapter(musicList)
+        binding.musiclistRecycleview.adapter = adapter
+        binding.musiclistRecycleview.layoutManager = LinearLayoutManager(context)
 
         return binding.root
     }
