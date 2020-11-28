@@ -1,4 +1,4 @@
-package com.example.jackdaw
+package com.example.jackdaw.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.jackdaw.databinding.FragmentMusicBinding
+import com.example.jackdaw.adapters.PlaylistAdapter
+import com.example.jackdaw.dataClasses.Playlists
+import com.example.jackdaw.R
 import com.example.jackdaw.databinding.FragmentPlayListBinding
-import kotlinx.android.synthetic.main.fragment_play_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

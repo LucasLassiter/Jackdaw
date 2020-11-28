@@ -4,10 +4,10 @@
     app:startDestination="@id/playListFragment">
     <fragment
         android:id="@+id/playListFragment"
-        android:name="com.example.jackdaw.PlayListFragment"
+        android:name="com.example.jackdaw.fragments.PlayListFragment"
         android:label="PlayListFragment" />
     <fragment
         android:id="@+id/musicFragment"
-        android:name="com.example.jackdaw.MusicFragment"
+        android:name="com.example.jackdaw.fragments.MusicFragment"
         android:label="MusicFragment" />
 </navigation>

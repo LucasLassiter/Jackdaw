@@ -1,4 +1,4 @@
-package com.example.jackdaw
+package com.example.jackdaw.dataClasses
 
 data class Playlists(
     var name: String,

@@ -1,10 +1,11 @@
-package com.example.jackdaw
+package com.example.jackdaw.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.playlist_recyclerview.view.*
+import com.example.jackdaw.R
+import com.example.jackdaw.dataClasses.SongsDataClass
 import kotlinx.android.synthetic.main.song_recycleview.view.*
 
 class SongAdapter(

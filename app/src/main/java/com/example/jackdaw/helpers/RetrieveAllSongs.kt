@@ -1,15 +1,11 @@
-package com.example.jackdaw
+package com.example.jackdaw.helpers
 
 import android.content.ContentUris
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import androidx.annotation.RequiresApi
-import java.net.URI
-import java.util.concurrent.TimeUnit
 
 
 class RetrieveAllSongs {

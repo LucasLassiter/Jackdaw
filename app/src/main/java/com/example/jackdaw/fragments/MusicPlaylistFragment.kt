@@ -1,18 +1,26 @@
-package com.example.jackdaw
+package com.example.jackdaw.fragments
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.jackdaw.databinding.FragmentMusicBinding
+import com.example.jackdaw.adapters.SongAdapter
+import com.example.jackdaw.R
+import com.example.jackdaw.helpers.RetrieveAllSongs
+import com.example.jackdaw.dataClasses.SongsDataClass
 import com.example.jackdaw.databinding.FragmentMusicPlaylistBinding
 
 
-class MusicPlaylist : Fragment() {
+class MusicPlaylistFragment : Fragment() {
 
+    private var retrieveAllSongs: RetrieveAllSongs = RetrieveAllSongs()
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +36,15 @@ class MusicPlaylist : Fragment() {
         var musicList = mutableListOf(
             SongsDataClass("Dramamine", 4)
         )
+
+
+        context?.let { retrieveAllSongs.retrieveAllSongs(it) }
+
+        for(name in retrieveAllSongs.getAllSongsNames())
+        {
+            musicList.add(SongsDataClass(name, 4))
+        }
+
 
         val adapter = SongAdapter(musicList)
         binding.musiclistRecycleview.adapter = adapter

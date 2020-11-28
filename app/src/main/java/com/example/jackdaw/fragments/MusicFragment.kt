@@ -1,17 +1,16 @@
-package com.example.jackdaw
+package com.example.jackdaw.fragments
 
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.renderscript.ScriptGroup
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.jackdaw.R
+import com.example.jackdaw.helpers.RetrieveAllSongs
 import com.example.jackdaw.databinding.FragmentMusicBinding
 import java.util.concurrent.TimeUnit
 
