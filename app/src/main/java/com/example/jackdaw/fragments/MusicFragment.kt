@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.jackdaw.R
 import com.example.jackdaw.helpers.RetrieveAllSongs
 import com.example.jackdaw.databinding.FragmentMusicBinding
+import com.example.jackdaw.services.MusicForegroundService
 import java.util.concurrent.TimeUnit
 
 
@@ -53,6 +54,8 @@ class MusicFragment : Fragment() {
 
     private fun playPauseButton(view: View, binding: FragmentMusicBinding)
     {
+
+        startForeground
         if (player == null)
         {
             currentSongIndex = 6

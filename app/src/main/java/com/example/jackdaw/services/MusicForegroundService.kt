@@ -3,28 +3,51 @@ package com.example.jackdaw.services
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.os.Build
+import android.app.Service
+import android.content.Context
+import android.content.Intent
+import android.os.*
+import android.widget.Toast
+import android.os.Process
 
-class MusicForegroundService : Application() {
-    val CHANNEL_ID : String = "MusicService"
+class MusicForegroundService : Service() {
+    private var serviceLooper: Looper? = null
+    private var serviceHandler: ServiceHandler? = null
 
-    @Override
-    override fun onCreate()
-    {
-        super.onCreate()
+    // Handler that receives messages from the thread
+    private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
-        createNotificationChannel()
-    }
-
-    private fun createNotificationChannel()
-    {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        fun musicPlayer(context: Context)
         {
-            val  musicChannel : NotificationChannel = NotificationChannel(
-                CHANNEL_ID,
-                "Music Service Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
+
         }
     }
+
+    override fun onCreate()
+    {
+        HandlerThread("ServiceStartArguments", Process.THREAD_PRIORITY_FOREGROUND).apply {
+            start()
+
+            serviceLooper = looper
+            serviceHandler = ServiceHandler(looper)
+        }
+    }
+
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int
+    {
+        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show()
+
+        startForeground()
+
+        return START_STICKY
+    }
+
+    override fun onBind(p0: Intent?): IBinder? {
+        return null
+    }
+
+    override fun onDestroy() {
+        Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show()
+    }
+
 }
