@@ -23,6 +23,7 @@ import com.lucasanimalfacts.jackdaw.core.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_cover_art.AlbumArt
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.Song
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.AlbumSongBar
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.ButtonBar
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.SongBar
 
@@ -72,9 +73,9 @@ fun PlaylistDetailScreen(
                     ButtonBar()
                 }
 
-
                 items(sharedViewModel.sharedState.value.songList!!.size) {
-                    SongBar(entry = sharedViewModel.sharedState.value.songList!![it],
+                    SongBar(
+                        entry = sharedViewModel.sharedState.value.songList!![it],
                         isAlbum = sharedViewModel.sharedState.value.isAlbum,
                         modifier = Modifier
                             .fillMaxWidth()

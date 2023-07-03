@@ -5,5 +5,6 @@ data class UseCaseWrapper(
     val getStarred: GetStarred,
     val getAlbumArt: GetAlbumArt,
     val getPlaylists: GetPlaylists,
-    val getPlaylist: GetPlaylist
+    val getPlaylist: GetPlaylist,
+    val getAlbum: GetAlbum
 )

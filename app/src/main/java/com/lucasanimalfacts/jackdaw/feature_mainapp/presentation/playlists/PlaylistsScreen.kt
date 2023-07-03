@@ -30,7 +30,7 @@ fun Playlists(
                     .padding(8.dp),
                     playlist = playlistsList[cur],
                     onClick = {
-                        sharedViewModel.addData(playlistsList[cur].id, playlistsList[cur].name)
+                        sharedViewModel.addDataPlaylist(playlistsList[cur].id, playlistsList[cur].name)
                         navController.navigate(Screen.PlaylistsDetail.route)
                     } )
             }

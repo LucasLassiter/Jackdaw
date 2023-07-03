@@ -2,6 +2,7 @@ package com.lucasanimalfacts.jackdaw.di
 
 import com.lucasanimalfacts.jackdaw.feature_mainapp.data.repository.SubsonicRepositoryImpl
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.repository.SubsonicRepository
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetAlbum
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetAlbumArt
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetPlaylist
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetPlaylists
@@ -32,7 +33,8 @@ object AppModule {
             getStarred = GetStarred(repository),
             getAlbumArt = GetAlbumArt(repository),
             getPlaylists = GetPlaylists(repository),
-            getPlaylist = GetPlaylist(repository)
+            getPlaylist = GetPlaylist(repository),
+            getAlbum = GetAlbum(repository)
         )
     }
 }

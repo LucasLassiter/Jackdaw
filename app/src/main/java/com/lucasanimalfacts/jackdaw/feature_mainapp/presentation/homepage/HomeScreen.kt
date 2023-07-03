@@ -19,16 +19,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.lucasanimalfacts.jackdaw.core.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.components.Album
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.components.RandomSong
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.components.StarredSong
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun HomeScreen(
+    navController: NavController,
+    sharedViewModel: PlaylistDetailViewModel,
     viewModel: HomepageViewModel = hiltViewModel()
 ) {
     LazyColumn(
@@ -48,11 +52,15 @@ fun HomeScreen(
                 )
 
                 LazyRow {
-                    viewModel.state.value.starred?.`subsonic-response`?.starred?.album?.let { songList ->
-                        items(songList.size) { cur ->
-                            Album(modifier = Modifier, album = songList[cur]) {
-
-                            }
+                    viewModel.state.value.starred?.`subsonic-response`?.starred?.album?.let { albumList ->
+                        items(albumList.size) { cur ->
+                            Album(modifier = Modifier,
+                                album = albumList[cur],
+                                onClick = {
+                                    Log.d("Homescreen", albumList[cur].id)
+                                    sharedViewModel.addAlbum(albumList[cur].id, albumList[cur].name)
+                                    navController.navigate(Screen.PlaylistsDetail.route)
+                            })
                         }
                     }
                 }

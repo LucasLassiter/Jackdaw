@@ -1,4 +1,4 @@
-package com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs
+package com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_album
 
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 
@@ -40,9 +40,9 @@ fun Song.toStandardSong() = StandardSong(
     parent = parent,
     path = path,
     size = size,
+    starred = "false",
     suffix = suffix,
     title = title,
     type = type,
-    year = year,
-    starred = "false"
+    year = year
 )

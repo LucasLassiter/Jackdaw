@@ -31,7 +31,7 @@ fun StarredSong(
 ) {
     Column(
         Modifier.padding(4.dp)
-            .width(150.dp)
+            .width(150.dp),
     ) {
         AsyncImage(
             model = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=" + song.coverArt,

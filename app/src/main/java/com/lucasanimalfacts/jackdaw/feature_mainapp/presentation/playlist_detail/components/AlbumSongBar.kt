@@ -23,12 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_album.Song
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlist.Entry
-import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 
 @Composable
-fun SongBar(
-    entry: StandardSong,
+fun AlbumSongBar(
+    song: Song,
     isAlbum: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -40,7 +40,7 @@ fun SongBar(
         Row {
             if (!isAlbum) {
                 AsyncImage(
-                    model = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=" + entry.coverArt,
+                    model = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=" + song.coverArt,
                     contentDescription = "Song cover art",
                     modifier = Modifier.width(50.dp)
                 )
@@ -53,7 +53,7 @@ fun SongBar(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
-                    text = entry.title,
+                    text = song.title,
                     fontFamily = robotoBoldFamily,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier.width(300.dp),
@@ -61,7 +61,7 @@ fun SongBar(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = entry.artist,
+                    text = song.artist,
                     fontFamily = robotoBoldFamily,
                     fontWeight = FontWeight.Light,
                     fontSize = 14.sp,

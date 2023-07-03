@@ -17,7 +17,7 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 fun SetupNavGraph(navController: NavHostController, sharedViewModel: PlaylistDetailViewModel) {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(navController, sharedViewModel)
         }
         composable(Screen.Playlists.route) {
             Playlists(navController = navController, sharedViewModel = sharedViewModel)

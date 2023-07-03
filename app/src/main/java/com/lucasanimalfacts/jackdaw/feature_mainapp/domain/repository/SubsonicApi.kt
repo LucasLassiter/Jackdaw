@@ -1,5 +1,6 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.domain.repository
 
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_album.GetAlbumSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlist.GetPlaylistSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_cover_art.AlbumArt
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlists.GetPlaylistsSubsonicResponseHolder
@@ -53,4 +54,13 @@ interface SubsonicApi {
                             @Query("f") responseType: String,
                             @Query("id") id: String
     ) : Response<GetPlaylistSubsonicResponseHolder>
+
+    @GET("getAlbum")
+    suspend fun getAlbum(@Query("u") username: String,
+                         @Query("p") password: String,
+                         @Query("v") version: String,
+                         @Query("c") appName: String,
+                         @Query("f") responseType: String,
+                         @Query("id") id: String
+    ) : Response<GetAlbumSubsonicResponseHolder>
 }

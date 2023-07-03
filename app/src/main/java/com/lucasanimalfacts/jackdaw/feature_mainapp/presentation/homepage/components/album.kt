@@ -1,6 +1,7 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +22,6 @@ import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_starred.Album
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun Album(
     modifier: Modifier,
@@ -29,13 +29,15 @@ fun Album(
     onClick: () -> Unit
 ) {
         Column(
-            Modifier.padding(4.dp)
+            modifier = Modifier
+                .padding(4.dp)
                 .width(150.dp)
         ) {
             AsyncImage(
                 model = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=" + album.coverArt,
                 contentDescription = "sdf",
                 modifier = Modifier.height(150.dp)
+                    .clickable { onClick() }
             )
             Text(
                 text = album.title,
