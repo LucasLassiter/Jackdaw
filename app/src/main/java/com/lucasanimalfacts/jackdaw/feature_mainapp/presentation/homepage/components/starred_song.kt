@@ -2,6 +2,7 @@ package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.compo
 
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_starred.Song
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +31,9 @@ fun StarredSong(
     onClick: () -> Unit
 ) {
     Column(
-        Modifier.padding(4.dp)
+        Modifier
+            .clickable { onClick() }
+            .padding(4.dp)
             .width(150.dp),
     ) {
         AsyncImage(

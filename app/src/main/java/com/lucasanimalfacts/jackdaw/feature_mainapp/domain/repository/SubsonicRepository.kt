@@ -6,6 +6,7 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_cover_art.
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlists.GetPlaylistsSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_starred.GetStarredSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.GetRandomSongsSubsonicResponseHolder
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.star.StarSubsonicResponseHolder
 
 interface SubsonicRepository {
     suspend fun getRandomSongs(username: String, password: String, version: String, appName: String, responseType: String) : GetRandomSongsSubsonicResponseHolder
@@ -14,4 +15,6 @@ interface SubsonicRepository {
     suspend fun getPlaylists(username: String, password: String, version: String, appName: String, responseType: String) : GetPlaylistsSubsonicResponseHolder
     suspend fun getPlaylist(username: String, password: String, version: String, appName: String, responseType: String, id: String) : GetPlaylistSubsonicResponseHolder
     suspend fun getAlbum(username: String, password: String, version: String, appName: String, responseType: String, id: String) : GetAlbumSubsonicResponseHolder
+    suspend fun star(username: String, password: String, version: String, appName: String, responseType: String, id: String) : StarSubsonicResponseHolder
+    suspend fun unStar(username: String, password: String, version: String, appName: String, responseType: String, id: String) : StarSubsonicResponseHolder
 }

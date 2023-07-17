@@ -6,8 +6,10 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_cover_art.
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlists.GetPlaylistsSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_starred.GetStarredSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.GetRandomSongsSubsonicResponseHolder
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.star.StarSubsonicResponseHolder
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface SubsonicApi {
@@ -63,4 +65,24 @@ interface SubsonicApi {
                          @Query("f") responseType: String,
                          @Query("id") id: String
     ) : Response<GetAlbumSubsonicResponseHolder>
+
+    @GET("star")
+    suspend fun star(
+        @Query("u") username: String,
+        @Query("p") password: String,
+        @Query("v") version: String,
+        @Query("c") appName: String,
+        @Query("f") responseType: String,
+        @Query("id") id: String
+    ) : Response<StarSubsonicResponseHolder>
+
+    @GET("unstar")
+    suspend fun unStar(
+        @Query("u") username: String,
+        @Query("p") password: String,
+        @Query("v") version: String,
+        @Query("c") appName: String,
+        @Query("f") responseType: String,
+        @Query("id") id: String
+    ) : Response<StarSubsonicResponseHolder>
 }

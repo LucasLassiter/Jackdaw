@@ -24,7 +24,9 @@ fun RandomSong(
     onClick: () -> Unit
 ) {
     Column(
-        Modifier.padding(4.dp)
+        Modifier
+            .clickable { onClick() }
+            .padding(4.dp)
             .width(150.dp)
     ) {
         AsyncImage(

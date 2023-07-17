@@ -1,13 +1,11 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail
 
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -18,18 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.lucasanimalfacts.jackdaw.core.PlaylistDetailViewModel
+import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
-import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_cover_art.AlbumArt
-import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.Song
-import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.AlbumSongBar
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.toStandardSong
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.ButtonBar
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.SongBar
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 
 @Composable
 fun PlaylistDetailScreen(
-    sharedViewModel: PlaylistDetailViewModel
+    sharedViewModel: PlaylistDetailViewModel,
+    songSharedViewModel: SongDetailViewModel,
+    navController: NavController
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -79,7 +80,11 @@ fun PlaylistDetailScreen(
                         isAlbum = sharedViewModel.sharedState.value.isAlbum,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 12.dp, 8.dp)
+                            .padding(start = 12.dp, 8.dp),
+                            onClick = {
+                                songSharedViewModel.addSong(sharedViewModel.sharedState.value.songList!![it])
+                                navController.navigate(Screen.SongDetail.route)
+                            }
                     )
                 }
                 item {

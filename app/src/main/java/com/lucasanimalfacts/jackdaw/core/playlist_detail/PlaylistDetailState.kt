@@ -1,4 +1,4 @@
-package com.lucasanimalfacts.jackdaw.core
+package com.lucasanimalfacts.jackdaw.core.playlist_detail
 
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 

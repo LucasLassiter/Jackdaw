@@ -5,4 +5,5 @@ sealed class Screen(val route: String) {
     object Playlists: Screen(route = "playlists")
     object Settings: Screen(route = "settings")
     object PlaylistsDetail: Screen(route = "playlists_detail")
+    object SongDetail: Screen(route = "song_detail")
 }

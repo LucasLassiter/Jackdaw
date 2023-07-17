@@ -1,15 +1,20 @@
 package com.lucasanimalfacts.jackdaw
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.ComponentName
+import android.content.Context
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
@@ -21,29 +26,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.R
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import com.lucasanimalfacts.jackdaw.core.PlaylistDetailViewModel
-import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.HomepageViewModel
-import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlists.PlaylistsViewModel
+import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.navigation.SetupNavGraph
 import com.lucasanimalfacts.jackdaw.ui.BottomNavItem
 import com.lucasanimalfacts.jackdaw.ui.theme.JackdawTheme
@@ -54,11 +53,30 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
     private lateinit var sharedViewModel: PlaylistDetailViewModel
+    private lateinit var songSharedViewModel: SongDetailViewModel
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                0
+            )
+        }
+
         sharedViewModel = ViewModelProvider(this)[PlaylistDetailViewModel::class.java]
+        songSharedViewModel = ViewModelProvider(this)[SongDetailViewModel::class.java]
+
+        val channel = NotificationChannel(
+            "music_channel",
+            "Music notifications",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+
 
         setContent {
             JackdawTheme {
@@ -99,7 +117,7 @@ class MainActivity : ComponentActivity() {
                                 innerPadding.calculateBottomPadding()
                             )
                         ) {
-                            SetupNavGraph(navController = navController, sharedViewModel = sharedViewModel)
+                            SetupNavGraph(navController = navController, sharedViewModel = sharedViewModel, songSharedViewModel = songSharedViewModel)
                         }
                     }
                 }

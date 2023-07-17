@@ -8,6 +8,7 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlists.
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_starred.GetStarredSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.GetRandomSongsSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.Playlist
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.star.StarSubsonicResponseHolder
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.repository.RetrofitInstance
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.repository.SubsonicRepository
 import retrofit2.HttpException
@@ -148,4 +149,43 @@ class SubsonicRepositoryImpl : SubsonicRepository {
         Log.d("getAlbum", response.body()!!.toString())
         return response.body()!!
     }
+
+    override suspend fun star(
+        username: String,
+        password: String,
+        version: String,
+        appName: String,
+        responseType: String,
+        id: String
+    ) : StarSubsonicResponseHolder {
+        val response = try {
+            RetrofitInstance.api.star(username = username, password = password, version = version, appName = appName, responseType = responseType, id = id)
+        } catch(e: IOException) {
+            throw Exception("IOException")
+        } catch(e: HttpException) {
+            throw Exception("HTTPException")
+        }
+
+        return response.body()!!
+    }
+
+    override suspend fun unStar(
+        username: String,
+        password: String,
+        version: String,
+        appName: String,
+        responseType: String,
+        id: String
+    ): StarSubsonicResponseHolder {
+        val response = try {
+            RetrofitInstance.api.unStar(username = username, password = password, version = version, appName = appName, responseType = responseType, id = id)
+        } catch(e: IOException) {
+            throw Exception("IOException")
+        } catch(e: HttpException) {
+            throw Exception("HTTPException")
+        }
+
+        return response.body()!!
+    }
+
 }

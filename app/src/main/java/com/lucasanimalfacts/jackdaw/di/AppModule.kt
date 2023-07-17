@@ -8,6 +8,8 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetPlaylist
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetPlaylists
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetRandomSongs
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.GetStarred
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.StarSong
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.UnStarSong
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.UseCaseWrapper
 import dagger.Module
 import dagger.Provides
@@ -34,7 +36,9 @@ object AppModule {
             getAlbumArt = GetAlbumArt(repository),
             getPlaylists = GetPlaylists(repository),
             getPlaylist = GetPlaylist(repository),
-            getAlbum = GetAlbum(repository)
+            getAlbum = GetAlbum(repository),
+            starSong = StarSong(repository),
+            unStarSong = UnStarSong(repository)
         )
     }
 }

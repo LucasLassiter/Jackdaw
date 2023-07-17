@@ -1,4 +1,4 @@
-package com.lucasanimalfacts.jackdaw.core
+package com.lucasanimalfacts.jackdaw.core.playlist_detail
 
 import android.util.Log
 import androidx.compose.runtime.State

@@ -1,5 +1,6 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,14 +31,17 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modul
 fun SongBar(
     entry: StandardSong,
     isAlbum: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row {
+        Row(
+            modifier = Modifier.clickable { onClick() }
+        ) {
             if (!isAlbum) {
                 AsyncImage(
                     model = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=" + entry.coverArt,
