@@ -67,25 +67,62 @@ class SongDetailViewModel @Inject constructor(
 
             is SongDetailEvent.playPause -> {
                 if (event.boolean) {
-                    Intent(this.application.applicationContext, MusicService::class.java).also {
+                    if (sharedState.value.started) {
+                        Intent(this.application.applicationContext, MusicService::class.java).also {
+                            it.action = MusicService.Actions.RESUME.toString()
+                            application.startService(it)
+                            _sharedState.value = sharedState.value.copy(
+                                playing = true
+                            )
+                        }
+                    } else {
 
-                        it.putExtra(MusicService.EXTRAS.ID.toString(), sharedState.value.song?.id)
-                        it.putExtra(MusicService.EXTRAS.TITLE.toString(), sharedState.value.title)
-                        it.putExtra(MusicService.EXTRAS.ARTIST.toString(), sharedState.value.song!!.artist)
+                        if (sharedState.value.playing) {
+                            Intent(
+                                this.application.applicationContext,
+                                MusicService::class.java
+                            ).also {
 
-                        it.action = MusicService.Actions.START.toString()
-                        application.startService(it)
+                                it.action = MusicService.Actions.STOP_PLAYER.toString()
+                                application.startService(it)
+                            }
+                        }
+
+                        Intent(this.application.applicationContext, MusicService::class.java).also {
+
+                            it.putExtra(
+                                MusicService.EXTRAS.ID.toString(),
+                                sharedState.value.song?.id
+                            )
+                            it.putExtra(
+                                MusicService.EXTRAS.TITLE.toString(),
+                                sharedState.value.title
+                            )
+                            it.putExtra(
+                                MusicService.EXTRAS.ARTIST.toString(),
+                                sharedState.value.song!!.artist
+                            )
+
+                            it.action = MusicService.Actions.START.toString()
+                            application.startService(it)
+                        }
+
+                        _sharedState.value = sharedState.value.copy(
+                            started = true,
+                            playing = true
+                        )
+
                     }
                 } else {
                     Intent(this.application.applicationContext, MusicService::class.java).also {
                         it.action = MusicService.Actions.STOP.toString()
                         application.startService(it)
                     }
+                    _sharedState.value = sharedState.value.copy(
+                        playing = false
+                    )
                 }
 
-                _sharedState.value = sharedState.value.copy(
-                    playing = !sharedState.value.playing
-                )
             }
         }
     }
@@ -99,8 +136,12 @@ class SongDetailViewModel @Inject constructor(
             title = song.title,
             song = song,
             albumArtUrl = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=${song.coverArt}",
-            starred = song.starred != "false"
+            starred = song.starred != "false",
+            started = song == sharedState.value.song,
+            playing = sharedState.value.playing
         )
+
+        onEvent(event = SongDetailEvent.playPause(true))
     }
 }
 

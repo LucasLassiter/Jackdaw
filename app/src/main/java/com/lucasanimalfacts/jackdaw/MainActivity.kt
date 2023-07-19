@@ -9,11 +9,13 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -30,6 +32,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -43,10 +47,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 import com.lucasanimalfacts.jackdaw.navigation.SetupNavGraph
 import com.lucasanimalfacts.jackdaw.ui.BottomNavItem
 import com.lucasanimalfacts.jackdaw.ui.theme.JackdawTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.last
+import kotlin.IllegalArgumentException
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -79,34 +86,44 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
+            navController = rememberNavController()
+//            val currentDestination = remember { navController.getBackStackEntry(Screen.SongDetail.route) }
             JackdawTheme {
                 // A surface container using the 'background' color from the theme
-                navController = rememberNavController()
+
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Scaffold(
                         bottomBar = {
-                            BottomNavigationBar(items = listOf(
-                                BottomNavItem(
-                                    name = "Home",
-                                    route = "home",
-                                    icon = Icons.Default.Home
-                                ),
-                                BottomNavItem(
-                                    name = "Playlists",
-                                    route = "playlists",
-                                    icon =  Icons.Default.List
-                                ),
-                                BottomNavItem(
-                                    name = "Settings",
-                                    route = "settings",
-                                    icon = Icons.Default.Settings
-                                )
-                            ),
-                                navController = navController,
-                                onItemClick = {
-                                    navController.navigate(it.route)
+                            Column(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Log.d("navControllerDest", "This ")
+                                if (songSharedViewModel.sharedState.value.started) {
+                                    Text(songSharedViewModel.sharedState.value.title)
                                 }
-                            )
+                                BottomNavigationBar(items = listOf(
+                                    BottomNavItem(
+                                        name = "Home",
+                                        route = "home",
+                                        icon = Icons.Default.Home
+                                    ),
+                                    BottomNavItem(
+                                        name = "Playlists",
+                                        route = "playlists",
+                                        icon = Icons.Default.List
+                                    ),
+                                    BottomNavItem(
+                                        name = "Settings",
+                                        route = "settings",
+                                        icon = Icons.Default.Settings
+                                    )
+                                ),
+                                    navController = navController,
+                                    onItemClick = {
+                                        navController.navigate(it.route)
+                                    }
+                                )
+                            }
                         }
                     ) { innerPadding ->
                         Box(

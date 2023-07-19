@@ -8,5 +8,6 @@ data class SongDetailState(
     val albumArtUrl: String = "",
     val time: Int = 0,
     val starred: Boolean = false,
-    val playing: Boolean = false
+    val playing: Boolean = false,
+    val started: Boolean = false,
 )
