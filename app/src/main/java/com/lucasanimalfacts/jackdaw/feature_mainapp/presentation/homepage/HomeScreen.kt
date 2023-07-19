@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_starred.toStandardSong
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.toStandardSong
@@ -32,6 +35,15 @@ fun HomeScreen(
     songSharedViewModel: SongDetailViewModel,
     viewModel: HomepageViewModel = hiltViewModel()
 ) {
+    val navBackstack = remember { mutableStateOf(navController.visibleEntries.value.last().destination.route) }.also {
+        it.value?.let { Log.d("navControllerDest", it) }
+        if (it.value == Screen.SongDetail.route) {
+            songSharedViewModel.onEvent(SongDetailEvent.focusedScreen(false))
+        } else {
+            songSharedViewModel.onEvent(SongDetailEvent.focusedScreen(true))
+        }
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -91,6 +103,7 @@ fun HomeScreen(
                     viewModel.state.value.randomSongs?.`subsonic-response`?.randomSongs?.song?.let { songList ->
                         items(songList.size) { cur ->
                             RandomSong(modifier = Modifier, song = songList[cur]) {
+                                songSharedViewModel.onEvent(SongDetailEvent.focusedScreen(true))
                                 songSharedViewModel.addSong(songList[cur].toStandardSong())
                                 navController.navigate(Screen.SongDetail.route)
                             }

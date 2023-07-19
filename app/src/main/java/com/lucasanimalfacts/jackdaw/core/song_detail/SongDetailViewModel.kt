@@ -122,7 +122,11 @@ class SongDetailViewModel @Inject constructor(
                         playing = false
                     )
                 }
-
+            }
+            is SongDetailEvent.focusedScreen -> {
+                _sharedState.value = sharedState.value.copy(
+                    focused = event.boolean
+                )
             }
         }
     }

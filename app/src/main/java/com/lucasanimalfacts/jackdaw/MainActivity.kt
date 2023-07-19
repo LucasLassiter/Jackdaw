@@ -12,17 +12,25 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -36,7 +44,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -45,7 +56,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
+import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 import com.lucasanimalfacts.jackdaw.navigation.SetupNavGraph
@@ -85,8 +99,10 @@ class MainActivity : ComponentActivity() {
         notificationManager.createNotificationChannel(channel)
 
 
+
         setContent {
             navController = rememberNavController()
+
 //            val currentDestination = remember { navController.getBackStackEntry(Screen.SongDetail.route) }
             JackdawTheme {
                 // A surface container using the 'background' color from the theme
@@ -97,9 +113,64 @@ class MainActivity : ComponentActivity() {
                             Column(
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Log.d("navControllerDest", "This ")
-                                if (songSharedViewModel.sharedState.value.started) {
-                                    Text(songSharedViewModel.sharedState.value.title)
+                                Log.d("navControllerDest", "This " + songSharedViewModel.sharedState.value.focused)
+                                if (songSharedViewModel.sharedState.value.focused && songSharedViewModel.sharedState.value.song?.artist?.isNotEmpty() == true) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                            .height(75.dp)
+                                            .clickable { navController.navigate(Screen.SongDetail.route) },
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        AsyncImage(
+                                            model = songSharedViewModel.sharedState.value.albumArtUrl,
+                                            contentDescription = "sdf",
+                                            modifier = Modifier.height(75.dp)
+                                        )
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxHeight()
+                                                .padding(top = 11.dp, bottom = 12.dp, start = 8.dp),
+                                            verticalArrangement = Arrangement.SpaceAround
+                                        ) {
+                                            Text(
+                                                text = songSharedViewModel.sharedState.value.title,
+                                                fontFamily = robotoBoldFamily,
+                                                fontWeight = FontWeight.Normal,
+                                                modifier = Modifier.width(250.dp),
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                            Text(
+                                                text = songSharedViewModel.sharedState.value.song!!.artist,
+                                                fontFamily = robotoBoldFamily,
+                                                fontWeight = FontWeight.Light,
+                                                fontSize = 14.sp,
+                                                modifier = Modifier.width(250.dp),
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        }
+                                        FilledIconButton(
+                                            onClick = {
+                                                if (songSharedViewModel.sharedState.value.playing) {
+                                                    Log.d("playingornah", "Pause")
+                                                    songSharedViewModel.onEvent(SongDetailEvent.playPause(false))
+                                                } else {
+                                                    Log.d("playingornah", "Play")
+                                                    songSharedViewModel.onEvent(SongDetailEvent.playPause(true))
+                                                }
+                                            },
+                                            modifier = Modifier.size(50.dp)
+                                        ) {
+                                            Icon(
+                                                if (!songSharedViewModel.sharedState.value.playing) painterResource(R.drawable.baseline_play_arrow_24) else painterResource(
+                                                    R.drawable.baseline_pause_24
+                                                ),
+                                                contentDescription = "Play / Pause",
+                                                modifier = Modifier.size(25.dp)
+                                            )
+                                        }
+                                    }
                                 }
                                 BottomNavigationBar(items = listOf(
                                     BottomNavItem(

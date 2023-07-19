@@ -16,10 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Favorite
@@ -43,6 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.R
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
@@ -50,17 +54,43 @@ import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailState
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.HomepageViewModel
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 import java.io.IOException
 
 @Composable
 fun SongDetailScreen(
+    navController: NavController,
     viewModel: SongDetailViewModel
 ) {
+    val navBackstack = remember { mutableStateOf(navController.visibleEntries.value.last().destination.route) }.also {
+        it.value?.let { Log.d("navControllerDest", it) }
+        if (it.value == Screen.SongDetail.route) {
+            viewModel.onEvent(SongDetailEvent.focusedScreen(false))
+        }
+    }
     if (viewModel.sharedState.value.song != null) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 12.dp, top = 8.dp, end = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.size(50.dp)
+            ) {
+                Icon(Icons.Default.ArrowDropDown, contentDescription = "Go Back", Modifier.size(55.dp))
+            }
+            IconButton(
+                onClick = { /*TODO*/ },
+                modifier = Modifier.size(50.dp)
+            ) {
+                Icon(Icons.Default.MoreVert, contentDescription = "Go Back", Modifier.size(25.dp))
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 64.dp),
+                .padding(top = 84.dp),
         ) {
             println(viewModel.sharedState.value.song!!.id)
             Column(

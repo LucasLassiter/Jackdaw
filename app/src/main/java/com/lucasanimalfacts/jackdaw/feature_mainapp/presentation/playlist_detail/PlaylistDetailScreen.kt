@@ -11,6 +11,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,6 +22,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.random_songs.toStandardSong
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components.ButtonBar
@@ -32,6 +35,14 @@ fun PlaylistDetailScreen(
     songSharedViewModel: SongDetailViewModel,
     navController: NavController
 ) {
+    val navBackstack = remember { mutableStateOf(navController.visibleEntries.value.last().destination.route) }.also {
+        it.value?.let { Log.d("navControllerDest", it) }
+        if (it.value == Screen.SongDetail.route) {
+            songSharedViewModel.onEvent(SongDetailEvent.focusedScreen(false))
+        } else {
+            songSharedViewModel.onEvent(SongDetailEvent.focusedScreen(true))
+        }
+    }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

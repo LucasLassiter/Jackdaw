@@ -20,7 +20,7 @@ fun SetupNavGraph(navController: NavHostController, sharedViewModel: PlaylistDet
             HomeScreen(navController, sharedViewModel, songSharedViewModel)
         }
         composable(Screen.Playlists.route) {
-            Playlists(navController = navController, sharedViewModel = sharedViewModel)
+            Playlists(navController = navController, sharedViewModel = sharedViewModel, songSharedViewModel = songSharedViewModel)
         }
         composable(Screen.Settings.route) {
             Settings()
@@ -29,7 +29,7 @@ fun SetupNavGraph(navController: NavHostController, sharedViewModel: PlaylistDet
             PlaylistDetailScreen(sharedViewModel = sharedViewModel, songSharedViewModel, navController = navController)
         }
         composable(Screen.SongDetail.route) {
-            SongDetailScreen(viewModel = songSharedViewModel)
+            SongDetailScreen(viewModel = songSharedViewModel, navController = navController)
         }
     }
 }
