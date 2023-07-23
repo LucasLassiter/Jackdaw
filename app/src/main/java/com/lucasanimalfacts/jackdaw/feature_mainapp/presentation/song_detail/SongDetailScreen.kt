@@ -1,5 +1,6 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.song_detail
 
+import android.content.ServiceConnection
 import android.graphics.drawable.PaintDrawable
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -34,8 +35,10 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -50,6 +53,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.R
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
+import com.lucasanimalfacts.jackdaw.core.service.MusicService
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailState
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
@@ -62,6 +66,7 @@ fun SongDetailScreen(
     navController: NavController,
     viewModel: SongDetailViewModel
 ) {
+
     val navBackstack = remember { mutableStateOf(navController.visibleEntries.value.last().destination.route) }.also {
         it.value?.let { Log.d("navControllerDest", it) }
         if (it.value == Screen.SongDetail.route) {
@@ -70,7 +75,8 @@ fun SongDetailScreen(
     }
     if (viewModel.sharedState.value.song != null) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(start = 12.dp, top = 8.dp, end = 12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -138,8 +144,8 @@ fun SongDetailScreen(
                 }
             }
             Slider(
-                value = 0f,
-                onValueChange = {},
+                value = ((viewModel.sharedState.value.mediaPlayer?.currentPosition?.toFloat() ?: 0f) / 1000000f),
+                onValueChange = {  },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 32.dp, end = 32.dp, top = 16.dp)
@@ -150,7 +156,7 @@ fun SongDetailScreen(
                     .padding(start = 32.dp, end = 32.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = viewModel.sharedState.value.time.toString())
+                Text(text = (viewModel.sharedState.value.mediaPlayer?.currentPosition).toString())
                 Text(text = viewModel.sharedState.value.song!!.duration.toString())
             }
 

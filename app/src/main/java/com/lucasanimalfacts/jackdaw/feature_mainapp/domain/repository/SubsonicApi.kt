@@ -19,7 +19,8 @@ interface SubsonicApi {
                                @Query("p") password: String,
                                @Query("v") version: String,
                                @Query("c") appName: String,
-                               @Query("f") responseType: String
+                               @Query("f") responseType: String,
+                               @Query("size") size: String
     ) : Response<GetRandomSongsSubsonicResponseHolder>
 
     @GET("getStarred")

@@ -110,90 +110,109 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Scaffold(
                         bottomBar = {
-                            Column(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Log.d("navControllerDest", "This " + songSharedViewModel.sharedState.value.focused)
-                                if (songSharedViewModel.sharedState.value.focused && songSharedViewModel.sharedState.value.song?.artist?.isNotEmpty() == true) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth()
-                                            .height(75.dp)
-                                            .clickable { navController.navigate(Screen.SongDetail.route) },
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        AsyncImage(
-                                            model = songSharedViewModel.sharedState.value.albumArtUrl,
-                                            contentDescription = "sdf",
-                                            modifier = Modifier.height(75.dp)
-                                        )
-                                        Column(
-                                            modifier = Modifier
-                                                .fillMaxHeight()
-                                                .padding(top = 11.dp, bottom = 12.dp, start = 8.dp),
-                                            verticalArrangement = Arrangement.SpaceAround
-                                        ) {
-                                            Text(
-                                                text = songSharedViewModel.sharedState.value.title,
-                                                fontFamily = robotoBoldFamily,
-                                                fontWeight = FontWeight.Normal,
-                                                modifier = Modifier.width(250.dp),
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                            Text(
-                                                text = songSharedViewModel.sharedState.value.song!!.artist,
-                                                fontFamily = robotoBoldFamily,
-                                                fontWeight = FontWeight.Light,
-                                                fontSize = 14.sp,
-                                                modifier = Modifier.width(250.dp),
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                        }
-                                        FilledIconButton(
-                                            onClick = {
-                                                if (songSharedViewModel.sharedState.value.playing) {
-                                                    Log.d("playingornah", "Pause")
-                                                    songSharedViewModel.onEvent(SongDetailEvent.playPause(false))
-                                                } else {
-                                                    Log.d("playingornah", "Play")
-                                                    songSharedViewModel.onEvent(SongDetailEvent.playPause(true))
-                                                }
-                                            },
-                                            modifier = Modifier.size(50.dp)
-                                        ) {
-                                            Icon(
-                                                if (!songSharedViewModel.sharedState.value.playing) painterResource(R.drawable.baseline_play_arrow_24) else painterResource(
-                                                    R.drawable.baseline_pause_24
-                                                ),
-                                                contentDescription = "Play / Pause",
-                                                modifier = Modifier.size(25.dp)
-                                            )
-                                        }
-                                    }
-                                }
-                                BottomNavigationBar(items = listOf(
-                                    BottomNavItem(
-                                        name = "Home",
-                                        route = "home",
-                                        icon = Icons.Default.Home
-                                    ),
-                                    BottomNavItem(
-                                        name = "Playlists",
-                                        route = "playlists",
-                                        icon = Icons.Default.List
-                                    ),
-                                    BottomNavItem(
-                                        name = "Settings",
-                                        route = "settings",
-                                        icon = Icons.Default.Settings
+                            if (songSharedViewModel.sharedState.value.focused) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Log.d(
+                                        "navControllerDest",
+                                        "This " + songSharedViewModel.sharedState.value.focused
                                     )
-                                ),
-                                    navController = navController,
-                                    onItemClick = {
-                                        navController.navigate(it.route)
+                                    if (songSharedViewModel.sharedState.value.focused && songSharedViewModel.sharedState.value.song?.artist?.isNotEmpty() == true) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth()
+                                                .height(75.dp)
+                                                .clickable { navController.navigate(Screen.SongDetail.route) },
+                                            verticalAlignment = Alignment.CenterVertically,
+                                        ) {
+                                            AsyncImage(
+                                                model = songSharedViewModel.sharedState.value.albumArtUrl,
+                                                contentDescription = "sdf",
+                                                modifier = Modifier.height(75.dp)
+                                            )
+                                            Column(
+                                                modifier = Modifier
+                                                    .fillMaxHeight()
+                                                    .padding(
+                                                        top = 11.dp,
+                                                        bottom = 12.dp,
+                                                        start = 8.dp
+                                                    ),
+                                                verticalArrangement = Arrangement.SpaceAround
+                                            ) {
+                                                Text(
+                                                    text = songSharedViewModel.sharedState.value.title,
+                                                    fontFamily = robotoBoldFamily,
+                                                    fontWeight = FontWeight.Normal,
+                                                    modifier = Modifier.width(250.dp),
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                                Text(
+                                                    text = songSharedViewModel.sharedState.value.song!!.artist,
+                                                    fontFamily = robotoBoldFamily,
+                                                    fontWeight = FontWeight.Light,
+                                                    fontSize = 14.sp,
+                                                    modifier = Modifier.width(250.dp),
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                            }
+                                            FilledIconButton(
+                                                onClick = {
+                                                    if (songSharedViewModel.sharedState.value.playing) {
+                                                        Log.d("playingornah", "Pause")
+                                                        songSharedViewModel.onEvent(
+                                                            SongDetailEvent.playPause(
+                                                                false
+                                                            )
+                                                        )
+                                                    } else {
+                                                        Log.d("playingornah", "Play")
+                                                        songSharedViewModel.onEvent(
+                                                            SongDetailEvent.playPause(
+                                                                true
+                                                            )
+                                                        )
+                                                    }
+                                                },
+                                                modifier = Modifier.size(50.dp)
+                                            ) {
+                                                Icon(
+                                                    if (!songSharedViewModel.sharedState.value.playing) painterResource(
+                                                        R.drawable.baseline_play_arrow_24
+                                                    ) else painterResource(
+                                                        R.drawable.baseline_pause_24
+                                                    ),
+                                                    contentDescription = "Play / Pause",
+                                                    modifier = Modifier.size(25.dp)
+                                                )
+                                            }
+                                        }
                                     }
-                                )
+                                    BottomNavigationBar(items = listOf(
+                                        BottomNavItem(
+                                            name = "Home",
+                                            route = "home",
+                                            icon = Icons.Default.Home
+                                        ),
+                                        BottomNavItem(
+                                            name = "Playlists",
+                                            route = "playlists",
+                                            icon = Icons.Default.List
+                                        ),
+                                        BottomNavItem(
+                                            name = "Settings",
+                                            route = "settings",
+                                            icon = Icons.Default.Settings
+                                        )
+                                    ),
+                                        navController = navController,
+                                        onItemClick = {
+                                            navController.navigate(it.route)
+                                        }
+                                    )
+                                }
                             }
                         }
                     ) { innerPadding ->

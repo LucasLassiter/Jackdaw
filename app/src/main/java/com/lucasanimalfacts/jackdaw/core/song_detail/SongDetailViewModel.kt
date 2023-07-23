@@ -1,7 +1,12 @@
 package com.lucasanimalfacts.jackdaw.core.song_detail
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.State
@@ -23,6 +28,32 @@ class SongDetailViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
     private val _sharedState = mutableStateOf(SongDetailState())
     val sharedState: State<SongDetailState> = _sharedState
+
+    @SuppressLint("StaticFieldLeak")
+    private lateinit var mService: MusicService
+    private var mBound: Boolean = false
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.d("SongDetailViewModel", "inside")
+            val binder = service as MusicService.LocalBinder
+            mService = binder.getService()
+            mBound = true
+
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            mBound = false
+        }
+    }
+
+    init {
+            Log.d("SongDetailViewModel", "outside")
+
+            Intent(this.application.applicationContext, MusicService::class.java).also { intent ->
+                application.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            }
+    }
 
     fun onEvent(event: SongDetailEvent) {
         when (event) {
@@ -72,10 +103,13 @@ class SongDetailViewModel @Inject constructor(
                             it.action = MusicService.Actions.RESUME.toString()
                             application.startService(it)
                             _sharedState.value = sharedState.value.copy(
-                                playing = true
+                                playing = true,
+                                mediaPlayer = mService.mediaPlayer()
                             )
                         }
                     } else {
+
+                        Log.d("SongDetailViewModel", mService.mediaPlayer().toString())
 
                         if (sharedState.value.playing) {
                             Intent(
@@ -109,9 +143,9 @@ class SongDetailViewModel @Inject constructor(
 
                         _sharedState.value = sharedState.value.copy(
                             started = true,
-                            playing = true
+                            playing = true,
+                            mediaPlayer = mService.mediaPlayer()
                         )
-
                     }
                 } else {
                     Intent(this.application.applicationContext, MusicService::class.java).also {
@@ -119,7 +153,8 @@ class SongDetailViewModel @Inject constructor(
                         application.startService(it)
                     }
                     _sharedState.value = sharedState.value.copy(
-                        playing = false
+                        playing = false,
+                        mediaPlayer = mService.mediaPlayer()
                     )
                 }
             }
@@ -130,6 +165,7 @@ class SongDetailViewModel @Inject constructor(
             }
         }
     }
+
 
     fun addSong(
         song: StandardSong
@@ -142,7 +178,8 @@ class SongDetailViewModel @Inject constructor(
             albumArtUrl = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=${song.coverArt}",
             starred = song.starred != "false",
             started = song == sharedState.value.song,
-            playing = sharedState.value.playing
+            playing = sharedState.value.playing,
+            mediaPlayer = mService.mediaPlayer()
         )
 
         onEvent(event = SongDetailEvent.playPause(true))

@@ -4,20 +4,55 @@ import android.app.Service
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.media.browse.MediaBrowser
+import android.media.session.MediaSession
+import android.os.Binder
+import android.os.Bundle
 import android.os.IBinder
+import android.service.media.MediaBrowserService
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.lucasanimalfacts.jackdaw.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
-class MusicService : Service(), MediaPlayer.OnPreparedListener {
+class MusicService : MediaBrowserService(), MediaPlayer.OnPreparedListener {
 
     private var mMediaPlayer: MediaPlayer? = null
     private var title: String = ""
     private var artist: String = ""
+    private var localBinder = LocalBinder()
+    private val serviceJob = Job()
+    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private lateinit var mediaSession: MediaSession
+    private lateinit var mediaSessionConnector: MediaSessionConnector
 
+    override fun onBind(intent: Intent?): IBinder {
+        return localBinder
+    }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+    override fun onGetRoot(
+        clientPackageName: String,
+        clientUid: Int,
+        rootHints: Bundle?
+    ): BrowserRoot? {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLoadChildren(
+        parentId: String,
+        result: Result<MutableList<MediaBrowser.MediaItem>>
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    fun mediaPlayer(): MediaPlayer? {
+        return mMediaPlayer
+    }
+
+    inner class LocalBinder : Binder() {
+        fun getService(): MusicService = this@MusicService
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -73,4 +108,5 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
     override fun onPrepared(mp: MediaPlayer?) {
         mp?.start()
     }
+
 }
