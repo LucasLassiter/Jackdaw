@@ -2,6 +2,7 @@ package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.song_detail
 
 import android.content.ServiceConnection
 import android.graphics.drawable.PaintDrawable
+import android.graphics.drawable.shapes.Shape
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -41,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -107,6 +110,7 @@ fun SongDetailScreen(
                     model = viewModel.sharedState.value.albumArtUrl,
                     contentDescription = "Cover art",
                     modifier = Modifier.height(300.dp)
+                        .clip(RoundedCornerShape(12.dp))
                 )
             }
 
