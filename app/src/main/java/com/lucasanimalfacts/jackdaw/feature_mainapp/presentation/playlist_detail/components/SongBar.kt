@@ -1,5 +1,8 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components
 
+import android.annotation.SuppressLint
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -8,6 +11,7 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -18,11 +22,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,11 +39,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
@@ -44,13 +55,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
+import com.lucasanimalfacts.jackdaw.R
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 import kotlin.math.roundToInt
 
 
 enum class DragValue { Start, Center, End }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongBar(
@@ -79,9 +95,27 @@ fun SongBar(
         }
     }
 
-    Box(
+    val coroutineScope = rememberCoroutineScope()
 
-    ) {
+    if (anchoredDraggableState.progress == 1f && anchoredDraggableState.currentValue != DragValue.Start) {
+        coroutineScope.launch {
+            anchoredDraggableState.animateTo(DragValue.Start)
+        }
+    }
+
+    Box()
+    {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .height(58.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(painterResource(id = R.drawable.baseline_playlist_add_24),
+                contentDescription = "",
+                Modifier.padding(start = 24.dp)
+                )
+        }
         Box(
             modifier = Modifier
                 .offset {
@@ -92,6 +126,7 @@ fun SongBar(
                     )
                 }
                 .anchoredDraggable(anchoredDraggableState, orientation = Orientation.Horizontal)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Row(
                 modifier = modifier,

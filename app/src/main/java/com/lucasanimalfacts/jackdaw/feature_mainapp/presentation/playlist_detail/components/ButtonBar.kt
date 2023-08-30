@@ -3,6 +3,7 @@ package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detai
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,11 +15,13 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,22 +40,25 @@ fun ButtonBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row {
-            FilledIconButton(
+            FilledTonalButton(
                 onClick = { /*TODO*/ },
-                modifier = Modifier.padding(end = 8.dp)
-                .size(50.dp),
-                shape = CircleShape
+//                modifier = Modifier.padding(end = 8.dp)
+//                .size(50.dp),
+
             ) {
                 Icon(
                     Icons.Default.PlayArrow,
                     contentDescription = "Play",
                     modifier = Modifier.size(32.dp)
                 )
+                Text("Play")
             }
+            
+            Spacer(modifier = Modifier.padding(4.dp))
 
-            OutlinedIconButton(
+            OutlinedButton(
                 onClick = { /*TODO*/ },
-                modifier = Modifier.size(50.dp),
+//                modifier = Modifier.size(50.dp),
                 shape = CircleShape
             ) {
                 Icon(
@@ -60,6 +66,7 @@ fun ButtonBar(
                     contentDescription = "Shuffle",
                     modifier = Modifier.size(32.dp)
                 )
+                Text("Shuffle")
             }
         }
         Column {
