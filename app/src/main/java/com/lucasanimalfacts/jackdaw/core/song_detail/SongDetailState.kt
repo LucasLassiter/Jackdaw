@@ -1,6 +1,7 @@
 package com.lucasanimalfacts.jackdaw.core.song_detail
 
 import android.media.MediaPlayer
+import com.lucasanimalfacts.jackdaw.core.service.MusicService
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 
 data class SongDetailState(
@@ -11,6 +12,5 @@ data class SongDetailState(
     val starred: Boolean = false,
     val playing: Boolean = false,
     val started: Boolean = false,
-    val focused: Boolean = false,
-    val mediaPlayer: MediaPlayer? = null
+    val focused: Boolean = false
 )

@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,9 +19,11 @@ import com.lucasanimalfacts.jackdaw.core.service.MusicService
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.use_case.UseCaseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class SongDetailViewModel @Inject constructor(
     private val useCaseWrapper: UseCaseWrapper,
@@ -29,14 +32,14 @@ class SongDetailViewModel @Inject constructor(
     private val _sharedState = mutableStateOf(SongDetailState())
     val sharedState: State<SongDetailState> = _sharedState
 
-    @SuppressLint("StaticFieldLeak")
+
     private lateinit var mService: MusicService
     private var mBound: Boolean = false
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            Log.d("SongDetailViewModel", "inside")
-            val binder = service as MusicService.LocalBinder
+            Log.d("SeekBarViewModel", "inside")
+            val binder = service as MusicService.MusicPlayerBinder
             mService = binder.getService()
             mBound = true
 
@@ -47,12 +50,13 @@ class SongDetailViewModel @Inject constructor(
         }
     }
 
-    init {
-            Log.d("SongDetailViewModel", "outside")
 
-            Intent(this.application.applicationContext, MusicService::class.java).also { intent ->
-                application.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-            }
+
+    init {
+        Intent(this.application.applicationContext, MusicService::class.java).also { intent ->
+            application.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+        Log.d("SeekBarViewModel", "now")
     }
 
     fun onEvent(event: SongDetailEvent) {
@@ -97,19 +101,23 @@ class SongDetailViewModel @Inject constructor(
             }
 
             is SongDetailEvent.playPause -> {
+                Log.d("SeekBarViewModel", "then")
                 if (event.boolean) {
                     if (sharedState.value.started) {
-                        Intent(this.application.applicationContext, MusicService::class.java).also {
+                        val intent = Intent(this.application.applicationContext, MusicService::class.java).also {
                             it.action = MusicService.Actions.RESUME.toString()
                             application.startService(it)
                             _sharedState.value = sharedState.value.copy(
-                                playing = true,
-                                mediaPlayer = mService.mediaPlayer()
+                                playing = true
                             )
                         }
+
+
+
+
+
                     } else {
 
-                        Log.d("SongDetailViewModel", mService.mediaPlayer().toString())
 
                         if (sharedState.value.playing) {
                             Intent(
@@ -143,8 +151,7 @@ class SongDetailViewModel @Inject constructor(
 
                         _sharedState.value = sharedState.value.copy(
                             started = true,
-                            playing = true,
-                            mediaPlayer = mService.mediaPlayer()
+                            playing = true
                         )
                     }
                 } else {
@@ -153,8 +160,7 @@ class SongDetailViewModel @Inject constructor(
                         application.startService(it)
                     }
                     _sharedState.value = sharedState.value.copy(
-                        playing = false,
-                        mediaPlayer = mService.mediaPlayer()
+                        playing = false
                     )
                 }
             }
@@ -178,11 +184,8 @@ class SongDetailViewModel @Inject constructor(
             albumArtUrl = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=${song.coverArt}",
             starred = song.starred != "false",
             started = song == sharedState.value.song,
-            playing = sharedState.value.playing,
-            mediaPlayer = mService.mediaPlayer()
+            playing = sharedState.value.playing
         )
-
-        onEvent(event = SongDetailEvent.playPause(true))
     }
 }
 

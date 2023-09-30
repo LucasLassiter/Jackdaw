@@ -1,5 +1,6 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.song_detail
 
+import android.app.Application
 import android.content.ServiceConnection
 import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.shapes.Shape
@@ -38,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,6 +55,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.R
@@ -61,13 +67,16 @@ import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailState
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.HomepageViewModel
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlists.PlaylistsViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 import java.io.IOException
 
 @Composable
 fun SongDetailScreen(
     navController: NavController,
-    viewModel: SongDetailViewModel
+    viewModel: SongDetailViewModel,
+    lifecycle: LifecycleOwner,
+    seekBarViewModel: SeekBarViewModel = hiltViewModel()
 ) {
 
     val navBackstack = remember { mutableStateOf(navController.visibleEntries.value.last().destination.route) }.also {
@@ -76,6 +85,7 @@ fun SongDetailScreen(
             viewModel.onEvent(SongDetailEvent.focusedScreen(false))
         }
     }
+
     if (viewModel.sharedState.value.song != null) {
         Row(
             modifier = Modifier
@@ -109,7 +119,8 @@ fun SongDetailScreen(
                 AsyncImage(
                     model = viewModel.sharedState.value.albumArtUrl,
                     contentDescription = "Cover art",
-                    modifier = Modifier.height(300.dp)
+                    modifier = Modifier
+                        .height(300.dp)
                         .clip(RoundedCornerShape(12.dp))
                 )
             }
@@ -148,7 +159,8 @@ fun SongDetailScreen(
                 }
             }
             Slider(
-                value = ((viewModel.sharedState.value.mediaPlayer?.currentPosition?.toFloat() ?: 0f) / 1000000f),
+                value = ((seekBarViewModel.curPlayerPosition.value.toFloat() / 1000f) / viewModel.sharedState.value.song!!.duration.toFloat()),
+//                value = 0f,
                 onValueChange = {  },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,7 +172,7 @@ fun SongDetailScreen(
                     .padding(start = 32.dp, end = 32.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = (viewModel.sharedState.value.mediaPlayer?.currentPosition).toString())
+                Text(text = seekBarViewModel.curPlayerPosition.value.toString())
                 Text(text = viewModel.sharedState.value.song!!.duration.toString())
             }
 

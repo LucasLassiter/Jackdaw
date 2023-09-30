@@ -1,6 +1,7 @@
 package com.lucasanimalfacts.jackdaw.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,7 +15,7 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.song_detail.Son
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 
 @Composable
-fun SetupNavGraph(navController: NavHostController, sharedViewModel: PlaylistDetailViewModel, songSharedViewModel: SongDetailViewModel) {
+fun SetupNavGraph(navController: NavHostController, sharedViewModel: PlaylistDetailViewModel, songSharedViewModel: SongDetailViewModel, lifecycleOwner: LifecycleOwner) {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
             HomeScreen(navController, sharedViewModel, songSharedViewModel)
@@ -29,7 +30,7 @@ fun SetupNavGraph(navController: NavHostController, sharedViewModel: PlaylistDet
             PlaylistDetailScreen(sharedViewModel = sharedViewModel, songSharedViewModel, navController = navController)
         }
         composable(Screen.SongDetail.route) {
-            SongDetailScreen(viewModel = songSharedViewModel, navController = navController)
+            SongDetailScreen(viewModel = songSharedViewModel, navController = navController, lifecycle = lifecycleOwner)
         }
     }
 }

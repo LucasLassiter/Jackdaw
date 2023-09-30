@@ -2,7 +2,9 @@ package com.lucasanimalfacts.jackdaw.core.service
 
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Binder
@@ -39,7 +41,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
     private var mMediaPlayer: MediaPlayer? = null
     private var title: String = ""
     private var artist: String = ""
-    private var localBinder = LocalBinder()
+    private val binder = MusicPlayerBinder()
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
     private lateinit var mediaSession: MediaSessionCompat
@@ -72,13 +74,20 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         mediaSessionConnector.setPlayer(exoPlayer)
     }
 
+    inner class MusicPlayerBinder : Binder() {
+        fun getService(): MusicService {
+            return this@MusicService
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         serviceScope.cancel()
     }
 
-    override fun onBind(intent: Intent?): IBinder {
-        return localBinder
+    override fun onBind(intent: Intent): IBinder {
+        Log.d("SeekBarViewModel", "hi")
+        return binder
     }
 
     override fun onGetRoot(
@@ -156,6 +165,13 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
 
     override fun onPrepared(mp: MediaPlayer?) {
         mp?.start()
+    }
+
+    fun getTime(): Int {
+        if (mMediaPlayer != null) {
+            return mMediaPlayer!!.currentPosition
+        }
+        return -1
     }
 
 }

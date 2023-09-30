@@ -224,7 +224,7 @@ class MainActivity : ComponentActivity() {
                                 innerPadding.calculateBottomPadding()
                             )
                         ) {
-                            SetupNavGraph(navController = navController, sharedViewModel = sharedViewModel, songSharedViewModel = songSharedViewModel)
+                            SetupNavGraph(navController = navController, sharedViewModel = sharedViewModel, songSharedViewModel = songSharedViewModel, lifecycleOwner = this@MainActivity)
                         }
                     }
                 }
@@ -274,13 +274,11 @@ class MainActivity : ComponentActivity() {
                                     contentDescription = item.name
                                 )
                             }
-                            if (selected) {
-                                Text(
-                                    text = item.name,
-                                    textAlign = TextAlign.Center,
-                                    fontSize = 10.sp
-                                )
-                            }
+                            Text(
+                                text = item.name,
+                                textAlign = TextAlign.Center,
+                                fontSize = 10.sp
+                            )
                         }
                     }
                 )
