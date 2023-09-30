@@ -109,7 +109,7 @@ fun SongDetailScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 84.dp),
+                .padding(top = 68.dp),
         ) {
             println(viewModel.sharedState.value.song!!.id)
             Column(
@@ -120,7 +120,7 @@ fun SongDetailScreen(
                     model = viewModel.sharedState.value.albumArtUrl,
                     contentDescription = "Cover art",
                     modifier = Modifier
-                        .height(300.dp)
+                        .height(350.dp)
                         .clip(RoundedCornerShape(12.dp))
                 )
             }
@@ -169,7 +169,7 @@ fun SongDetailScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 32.dp, end = 32.dp),
+                    .padding(start = 38.dp, end = 38.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = seekBarViewModel.curPlayerPosition.value.formatedTime)

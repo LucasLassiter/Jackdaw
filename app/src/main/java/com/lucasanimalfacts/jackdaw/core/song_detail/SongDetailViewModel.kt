@@ -169,7 +169,7 @@ class SongDetailViewModel @Inject constructor(
     {
         var minutes: Int = 0
         var seconds = 0
-        if (pos > 60) {
+        if (pos >= 60) {
             minutes = pos / 60
             seconds = pos - (minutes * 60)
         } else {

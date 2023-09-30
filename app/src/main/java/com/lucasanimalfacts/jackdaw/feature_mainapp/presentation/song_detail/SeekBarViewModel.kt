@@ -65,7 +65,7 @@ class SeekBarViewModel @Inject constructor(
         var minutes: Int = 0
         var seconds = 0
         val mPos: Int = pos / 1000
-        if (mPos > 60) {
+        if (mPos >= 60) {
             minutes = mPos / 60
             seconds = mPos - (minutes * 60)
         } else {
