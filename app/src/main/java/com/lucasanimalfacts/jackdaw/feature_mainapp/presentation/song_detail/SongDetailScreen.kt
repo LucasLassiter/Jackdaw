@@ -159,7 +159,7 @@ fun SongDetailScreen(
                 }
             }
             Slider(
-                value = ((seekBarViewModel.curPlayerPosition.value.toFloat() / 1000f) / viewModel.sharedState.value.song!!.duration.toFloat()),
+                value = ((seekBarViewModel.curPlayerPosition.value.unformattedTime.toFloat() / 1000f) / viewModel.sharedState.value.song!!.duration.toFloat()),
 //                value = 0f,
                 onValueChange = {  },
                 modifier = Modifier
@@ -172,8 +172,8 @@ fun SongDetailScreen(
                     .padding(start = 32.dp, end = 32.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = seekBarViewModel.curPlayerPosition.value.toString())
-                Text(text = viewModel.sharedState.value.song!!.duration.toString())
+                Text(text = seekBarViewModel.curPlayerPosition.value.formatedTime)
+                Text(text = viewModel.sharedState.value.formattedDuration)
             }
 
             Row(

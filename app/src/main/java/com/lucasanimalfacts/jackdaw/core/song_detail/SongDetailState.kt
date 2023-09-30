@@ -12,5 +12,6 @@ data class SongDetailState(
     val starred: Boolean = false,
     val playing: Boolean = false,
     val started: Boolean = false,
-    val focused: Boolean = false
+    val focused: Boolean = false,
+    val formattedDuration: String = "0:00"
 )

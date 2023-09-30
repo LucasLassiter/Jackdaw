@@ -49,8 +49,8 @@ class SeekBarViewModel @Inject constructor(
         }
     }
 
-    private val _curPlayerPosition = mutableIntStateOf(0)
-    val curPlayerPosition: State<Int> = _curPlayerPosition
+    private val _curPlayerPosition = mutableStateOf(SeekBarState())
+    val curPlayerPosition: State<SeekBarState> = _curPlayerPosition
 
     init {
         Log.d("SeekBarViewModel", "wow")
@@ -60,19 +60,35 @@ class SeekBarViewModel @Inject constructor(
         updateCurrentPlayerPosition()
     }
 
+    private fun playerPositionFormatter(pos: Int) : String
+    {
+        var minutes: Int = 0
+        var seconds = 0
+        val mPos: Int = pos / 1000
+        if (mPos > 60) {
+            minutes = mPos / 60
+            seconds = mPos - (minutes * 60)
+        } else {
+            seconds = pos / 1000
+        }
+        return "${minutes}:${if(seconds < 10) "0$seconds" else seconds}"
+    }
+
     private fun updateCurrentPlayerPosition() {
         Log.d("seekbarviewmodel2", "reached")
         viewModelScope.launch {
             delay(100L)
             while(true) {
                 val pos = musicPlayerService.mediaPlayer()?.currentPosition
-                if(curPlayerPosition.value != pos) {
+                if(curPlayerPosition.value.unformattedTime.toInt() != pos) {
                     if (pos != null) {
-                        _curPlayerPosition.value = pos
+                        _curPlayerPosition.value = curPlayerPosition.value.copy(
+                            formatedTime = playerPositionFormatter(pos),
+                            unformattedTime = pos.toString()
+                        )
                     }
                 }
                 delay(100L)
-            Log.d("SeekBarViewModel", pos.toString())
             }
         }
     }

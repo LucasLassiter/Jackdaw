@@ -26,7 +26,7 @@ class SubsonicRepositoryImpl : SubsonicRepository {
     ): GetRandomSongsSubsonicResponseHolder {
         Log.d("getRandomSongs", "here")
         val response = try {
-            RetrofitInstance.api.getRandomSongs(username = username, password = password, version = version, appName = appName, responseType = responseType, size = "900")
+            RetrofitInstance.api.getRandomSongs(username = username, password = password, version = version, appName = appName, responseType = responseType, size = "20")
         } catch(e: IOException) {
             Log.e("getRandomSongs", "IOException")
             throw Exception("IOException")

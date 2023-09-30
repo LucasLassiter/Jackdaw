@@ -111,14 +111,7 @@ class SongDetailViewModel @Inject constructor(
                                 playing = true
                             )
                         }
-
-
-
-
-
                     } else {
-
-
                         if (sharedState.value.playing) {
                             Intent(
                                 this.application.applicationContext,
@@ -160,7 +153,7 @@ class SongDetailViewModel @Inject constructor(
                         application.startService(it)
                     }
                     _sharedState.value = sharedState.value.copy(
-                        playing = false
+                        playing = false,
                     )
                 }
             }
@@ -172,7 +165,18 @@ class SongDetailViewModel @Inject constructor(
         }
     }
 
-
+    private fun playerPositionFormatter(pos: Int) : String
+    {
+        var minutes: Int = 0
+        var seconds = 0
+        if (pos > 60) {
+            minutes = pos / 60
+            seconds = pos - (minutes * 60)
+        } else {
+            seconds = pos / 1000
+        }
+        return "${minutes}:${if(seconds < 10) "0$seconds" else seconds}"
+    }
     fun addSong(
         song: StandardSong
     ) {
@@ -184,7 +188,8 @@ class SongDetailViewModel @Inject constructor(
             albumArtUrl = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=${song.coverArt}",
             starred = song.starred != "false",
             started = song == sharedState.value.song,
-            playing = sharedState.value.playing
+            playing = sharedState.value.playing,
+            formattedDuration = playerPositionFormatter(song.duration)
         )
     }
 }
