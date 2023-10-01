@@ -27,11 +27,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.lucasanimalfacts.jackdaw.R
+import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailEvent
+import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
+import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
 
 @Composable
 fun ButtonBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PlaylistDetailViewModel,
+    sharedViewModel: SongDetailViewModel,
+    navController: NavController
 ) {
     Row(
         modifier = Modifier
@@ -41,9 +49,14 @@ fun ButtonBar(
     ) {
         Row {
             FilledTonalButton(
-                onClick = { /*TODO*/ },
-//                modifier = Modifier.padding(end = 8.dp)
-//                .size(50.dp),
+                onClick =
+                {
+                    viewModel.onEvent(PlaylistDetailEvent.LinearQueueAllSongs())
+                    if (viewModel.sharedState.value.songList?.get(0) != null) {
+                        sharedViewModel.addSong(viewModel.sharedState.value.songList!![0])
+                    }
+                    navController.navigate(Screen.SongDetail.route)
+                },
 
             ) {
                 Icon(

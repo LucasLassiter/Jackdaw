@@ -52,8 +52,8 @@ class SeekBarViewModel @Inject constructor(
 
     private fun playerPositionFormatter(pos: Int) : String
     {
-        var minutes: Int = 0
-        var seconds = 0
+        var minutes = 0
+        val seconds: Int
         val mPos: Int = pos / 1000
         if (mPos >= 60) {
             minutes = mPos / 60
@@ -70,18 +70,25 @@ class SeekBarViewModel @Inject constructor(
             while(true) {
                 val pos = musicPlayerService.mediaPlayer()?.currentPosition
                 if(curPlayerPosition.value.unformattedTime.toInt() != pos) {
+                    // Updates seekbar
                     if (pos != null) {
                         _curPlayerPosition.value = curPlayerPosition.value.copy(
                             formattedTime = playerPositionFormatter(pos),
                             unformattedTime = pos.toString(),
+                            duration = playerPositionFormatter(musicPlayerService.mediaPlayer()!!.duration)
                         )
+                        // Updates song title
                         if(musicPlayerService.getCurrentSong() != null) {
                             _curPlayerPosition.value = curPlayerPosition.value.copy(
-                                title = musicPlayerService.getCurrentSong()!!.title
+                                title = musicPlayerService.getCurrentSong()!!.title,
                             )
                         }
                     }
                 }
+                // Updates play/pause button
+                _curPlayerPosition.value = curPlayerPosition.value.copy(
+                    playing = musicPlayerService.mediaPlayer()!!.isPlaying
+                )
                 delay(100L)
             }
         }

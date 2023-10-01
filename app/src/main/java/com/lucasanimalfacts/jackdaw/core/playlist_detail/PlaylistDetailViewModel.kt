@@ -62,6 +62,13 @@ class PlaylistDetailViewModel @Inject constructor(
             is PlaylistDetailEvent.QueueSong -> {
                 mService.addSong(event.song)
             }
+            is PlaylistDetailEvent.LinearQueueAllSongs -> {
+                Log.d("Adding Songs", "Attempting To Add")
+                sharedState.value.songList?.forEach {
+                    Log.d("Adding Songs", it.title)
+                    mService.addSong(it)
+                }
+            }
         }
     }
 
@@ -126,6 +133,5 @@ class PlaylistDetailViewModel @Inject constructor(
                 name = name
             )
         }
-        Log.d("detailscreen", "here " + sharedState.value.toString())
     }
 }

@@ -5,4 +5,5 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modul
 
 sealed class PlaylistDetailEvent {
     data class QueueSong(val song: StandardSong): PlaylistDetailEvent()
+    data class LinearQueueAllSongs(val boolean: Boolean = true): PlaylistDetailEvent()
 }

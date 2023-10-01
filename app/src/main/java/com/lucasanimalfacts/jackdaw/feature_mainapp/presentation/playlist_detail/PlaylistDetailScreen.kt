@@ -115,10 +115,6 @@ fun PlaylistDetailScreen(
                                     modifier = Modifier.height(300.dp)
                                 )
                             } else {
-                                Log.d(
-                                    "detailscreen",
-                                    sharedViewModel.sharedState.value.albumArtUrl.toString()
-                                )
                                 AsyncImage(
                                     model = sharedViewModel.sharedState.value.albumArtUrl,
                                     contentDescription = "playlist art",
@@ -130,7 +126,7 @@ fun PlaylistDetailScreen(
                         }
                     }
                     item {
-                        ButtonBar()
+                        ButtonBar(viewModel = sharedViewModel, navController = navController, sharedViewModel = songSharedViewModel)
                     }
 
                     items(sharedViewModel.sharedState.value.songList!!.size) {

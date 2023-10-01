@@ -200,6 +200,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
     }
 
     fun playSong(song: StandardSong) {
+        songList.add(song)
         val intent = Intent(this.application.applicationContext, MusicService::class.java).also {
             it.putExtra(
                 EXTRAS.ID.toString(),

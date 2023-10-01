@@ -121,25 +121,7 @@ class SongDetailViewModel @Inject constructor(
                                 application.startService(it)
                             }
                         }
-                        Log.d("SongDetailViewModel", "Initial")
-//                        Intent(this.application.applicationContext, MusicService::class.java).also {
-//
-//                            it.putExtra(
-//                                MusicService.EXTRAS.ID.toString(),
-//                                sharedState.value.song?.id
-//                            )
-//                            it.putExtra(
-//                                MusicService.EXTRAS.TITLE.toString(),
-//                                sharedState.value.title
-//                            )
-//                            it.putExtra(
-//                                MusicService.EXTRAS.ARTIST.toString(),
-//                                sharedState.value.song!!.artist
-//                            )
-//
-//                            it.action = MusicService.Actions.START.toString()
-//                            application.startService(it)
-//                        }
+                        Log.d("SongDetailViewModel", "Initial Playing")
 
                         _sharedState.value = sharedState.value.copy(
                             started = true,

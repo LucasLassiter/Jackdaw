@@ -146,7 +146,7 @@ fun SongDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = seekBarViewModel.curPlayerPosition.value.formattedTime)
-                Text(text = viewModel.sharedState.value.formattedDuration)
+                Text(text = seekBarViewModel.curPlayerPosition.value.duration)
             }
 
             Row(
@@ -188,7 +188,7 @@ fun SongDetailScreen(
                     modifier = Modifier.size(70.dp)
                 ) {
                     Icon(
-                        if (!viewModel.sharedState.value.playing) painterResource(R.drawable.baseline_play_arrow_24) else painterResource(
+                        if (!seekBarViewModel.curPlayerPosition.value.playing) painterResource(R.drawable.baseline_play_arrow_24) else painterResource(
                             R.drawable.baseline_pause_24
                         ),
                         contentDescription = "Play / Pause",
