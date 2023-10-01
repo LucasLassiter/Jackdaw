@@ -56,7 +56,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.R
+import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailEvent
+import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
+import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -73,11 +76,12 @@ fun SongBar(
     entry: StandardSong,
     isAlbum: Boolean,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    viewModel: PlaylistDetailViewModel
 ) {
 
     val density = LocalDensity.current
-
+    val addCheck = remember { mutableStateOf(true) }
 
     val anchoredDraggableState = remember {
         AnchoredDraggableState(
@@ -97,9 +101,22 @@ fun SongBar(
 
     val coroutineScope = rememberCoroutineScope()
 
+    // Queues Song on SongBar Drag
     if (anchoredDraggableState.progress == 1f && anchoredDraggableState.currentValue != DragValue.Start) {
+        if (addCheck.value && anchoredDraggableState.currentValue == DragValue.End) {
+            Log.d("SongBarAddCheck", "addCheck")
+            viewModel.onEvent(PlaylistDetailEvent.QueueSong(entry))
+            addCheck.value = false
+        }
         coroutineScope.launch {
             anchoredDraggableState.animateTo(DragValue.Start)
+        }
+    }
+
+    if (anchoredDraggableState.currentValue == DragValue.Start) {
+        if (!addCheck.value) {
+            Log.d("SongBarAddCheck", "Disabled")
+            addCheck.value = true
         }
     }
 

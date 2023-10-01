@@ -19,8 +19,11 @@ import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.common.collect.Iterables.skip
 import com.lucasanimalfacts.jackdaw.R
 import com.lucasanimalfacts.jackdaw.core.service.callbacks.MusicPlayerNotificationListener
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_album.Song
+import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.standard_modules.StandardSong
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +48,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
     private lateinit var mediaSession: MediaSessionCompat
-    private lateinit var mediaSessionConnector: MediaSessionConnector
+    private var songList: MutableList<StandardSong> = arrayListOf()
 
     var isForegroundService = false
 
@@ -70,8 +73,6 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
 
         }
 
-        mediaSessionConnector = MediaSessionConnector(mediaSession)
-        mediaSessionConnector.setPlayer(exoPlayer)
     }
 
     inner class MusicPlayerBinder : Binder() {
@@ -109,16 +110,13 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         return mMediaPlayer
     }
 
-    inner class LocalBinder : Binder() {
-        fun getService(): MusicService = this@MusicService
-    }
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             Actions.START.toString() -> start(intent = intent, id = intent.extras?.getString(EXTRAS.ID.toString())!!)
             Actions.STOP.toString() -> stop()
             Actions.RESUME.toString() -> resume()
             Actions.STOP_PLAYER.toString() -> stopPlayer()
+            Actions.SKIP.toString() -> skip()
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -156,7 +154,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
     }
 
     enum class Actions {
-        START, STOP, RESUME, STOP_PLAYER
+        START, STOP, RESUME, STOP_PLAYER, SKIP
     }
 
     enum class EXTRAS {
@@ -167,6 +165,26 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         mp?.start()
     }
 
+    private fun skip() {
+        if (songList.size > 1) {
+            songList.removeFirst()
+            val intent =
+                Intent(this.application.applicationContext, MusicService::class.java).also {
+                    it.putExtra(
+                        EXTRAS.ID.toString(),
+                        songList.first().id
+                    )
+                    it.putExtra(
+                        EXTRAS.ARTIST.toString(),
+                        songList.first().artist
+                    )
+                }
+            stop()
+//            Log.d("SongListEntries", songList.forEach { it.title }.toString())
+            start(intent, songList.first().id)
+        }
+    }
+
     fun getTime(): Int {
         if (mMediaPlayer != null) {
             return mMediaPlayer!!.currentPosition
@@ -174,4 +192,50 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         return -1
     }
 
+    fun getCurrentSong(): StandardSong? {
+        if (songList.isEmpty()) {
+            return null
+        }
+        return songList.first()
+    }
+
+    fun playSong(song: StandardSong) {
+        val intent = Intent(this.application.applicationContext, MusicService::class.java).also {
+            it.putExtra(
+                EXTRAS.ID.toString(),
+                song.id
+            )
+            it.putExtra(
+                EXTRAS.ARTIST.toString(),
+                song.artist
+            )
+        }
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer!!.isPlaying) {
+                stop()
+            }
+        }
+        Log.d("SongServiceAdd", "added + playing ${song.title}")
+        start(intent = intent, song.id)
+    }
+    fun addSong(song: StandardSong) {
+        val intent = Intent(this.application.applicationContext, MusicService::class.java).also {
+            it.putExtra(
+                EXTRAS.ID.toString(),
+                song.id
+            )
+            it.putExtra(
+                EXTRAS.ARTIST.toString(),
+                song.artist
+            )
+        }
+
+        songList.add(song)
+        Log.d("SongServiceAdd", "added ${song.title}")
+
+        if (mMediaPlayer == null) {
+            Log.d("SongServiceAdd", "starting")
+            start(intent, song.id)
+        }
+    }
 }

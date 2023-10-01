@@ -143,7 +143,8 @@ fun PlaylistDetailScreen(
                             onClick = {
                                 songSharedViewModel.addSong(sharedViewModel.sharedState.value.songList!![it])
                                 navController.navigate(Screen.SongDetail.route)
-                            }
+                            },
+                            viewModel = sharedViewModel
                         )
                     }
                     item {

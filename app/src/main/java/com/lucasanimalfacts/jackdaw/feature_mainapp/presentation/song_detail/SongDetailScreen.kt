@@ -1,13 +1,6 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.song_detail
 
-import android.app.Application
-import android.content.ServiceConnection
-import android.graphics.drawable.PaintDrawable
-import android.graphics.drawable.shapes.Shape
-import android.media.AudioManager
-import android.media.MediaPlayer
 import android.util.Log
-import android.widget.SeekBar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,52 +17,32 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.R
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
-import com.lucasanimalfacts.jackdaw.core.service.MusicService
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailEvent
-import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailState
 import com.lucasanimalfacts.jackdaw.core.song_detail.SongDetailViewModel
-import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.homepage.HomepageViewModel
-import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlists.PlaylistsViewModel
 import com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.util.Screen
-import java.io.IOException
 
 @Composable
 fun SongDetailScreen(
@@ -132,7 +105,7 @@ fun SongDetailScreen(
             ) {
                 Column {
                     Text(
-                        text = viewModel.sharedState.value.title,
+                        text = seekBarViewModel.curPlayerPosition.value.title,
                         fontSize = 20.sp,
                         fontFamily = robotoBoldFamily,
                         fontWeight = FontWeight.Bold,
@@ -172,7 +145,7 @@ fun SongDetailScreen(
                     .padding(start = 38.dp, end = 38.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = seekBarViewModel.curPlayerPosition.value.formatedTime)
+                Text(text = seekBarViewModel.curPlayerPosition.value.formattedTime)
                 Text(text = viewModel.sharedState.value.formattedDuration)
             }
 
@@ -223,7 +196,7 @@ fun SongDetailScreen(
                     )
                 }
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { viewModel.onEvent(SongDetailEvent.skipSong()) },
                     modifier = Modifier.size(70.dp)
                 ) {
                     Icon(
