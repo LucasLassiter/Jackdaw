@@ -5,5 +5,7 @@ data class SeekBarState(
     val unformattedTime: String = "0",
     val title: String = "",
     val playing: Boolean = false,
-    val duration: String = "0:00"
+    val duration: String = "0:00",
+    val artist: String = "",
+    val albumArtURL: String = ""
 )

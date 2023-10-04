@@ -84,13 +84,12 @@ fun SongDetailScreen(
                 .fillMaxSize()
                 .padding(top = 68.dp),
         ) {
-            println(viewModel.sharedState.value.song!!.id)
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AsyncImage(
-                    model = viewModel.sharedState.value.albumArtUrl,
+                    model = seekBarViewModel.curPlayerPosition.value.albumArtURL,
                     contentDescription = "Cover art",
                     modifier = Modifier
                         .height(350.dp)
@@ -114,7 +113,7 @@ fun SongDetailScreen(
                         maxLines = 1
                     )
                     Text(
-                        text = viewModel.sharedState.value.song!!.artist,
+                        text = seekBarViewModel.curPlayerPosition.value.artist,
                         fontFamily = robotoBoldFamily,
                         fontWeight = FontWeight.Light,
                         modifier = Modifier.width(250.dp),

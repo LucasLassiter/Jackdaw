@@ -75,7 +75,9 @@ class SeekBarViewModel @Inject constructor(
                         _curPlayerPosition.value = curPlayerPosition.value.copy(
                             formattedTime = playerPositionFormatter(pos),
                             unformattedTime = pos.toString(),
-                            duration = playerPositionFormatter(musicPlayerService.mediaPlayer()!!.duration)
+                            duration = playerPositionFormatter(musicPlayerService.mediaPlayer()!!.duration),
+                            artist = musicPlayerService.getCurrentSong()!!.artist,
+                            albumArtURL = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=${musicPlayerService.getCurrentSong()!!.id}"
                         )
                         // Updates song title
                         if(musicPlayerService.getCurrentSong() != null) {
