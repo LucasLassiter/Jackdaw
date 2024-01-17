@@ -1,6 +1,7 @@
 package com.lucasanimalfacts.jackdaw.feature_mainapp.presentation.playlist_detail.components
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.tween
@@ -54,7 +55,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.lucasanimalfacts.jackdaw.R
 import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailEvent
 import com.lucasanimalfacts.jackdaw.core.playlist_detail.PlaylistDetailViewModel
@@ -77,7 +80,7 @@ fun SongBar(
     isAlbum: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    viewModel: PlaylistDetailViewModel
+    viewModel: PlaylistDetailViewModel,
 ) {
 
     val density = LocalDensity.current
@@ -153,9 +156,11 @@ fun SongBar(
                 Row(
                     modifier = Modifier.clickable { onClick() }
                 ) {
+                    val url = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id="  + entry.coverArt
+
                     if (!isAlbum) {
                         AsyncImage(
-                            model = "http://lucasanimalfacts.com:4533/rest/getCoverArt?u=lucas&p=ZPvl(%3CD-W6rj[Cb%22&v=1.16.1&c=navidrome&f=json&id=" + entry.coverArt,
+                            model = url,
                             contentDescription = "Song cover art",
                             modifier = Modifier
                                 .width(50.dp)

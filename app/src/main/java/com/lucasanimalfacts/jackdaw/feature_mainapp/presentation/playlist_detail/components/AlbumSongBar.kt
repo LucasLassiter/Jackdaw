@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import com.lucasanimalfacts.jackdaw.core.robotoBoldFamily
 import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_album.Song
@@ -30,7 +31,8 @@ import com.lucasanimalfacts.jackdaw.feature_mainapp.domain.models.get_playlist.E
 fun AlbumSongBar(
     song: Song,
     isAlbum: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imageLoader: ImageLoader
 ) {
     Row(
         modifier = modifier,

@@ -132,7 +132,6 @@ fun SongDetailScreen(
             }
             Slider(
                 value = ((seekBarViewModel.curPlayerPosition.value.unformattedTime.toFloat() / 1000f) / viewModel.sharedState.value.song!!.duration.toFloat()),
-//                value = 0f,
                 onValueChange = {  },
                 modifier = Modifier
                     .fillMaxWidth()
