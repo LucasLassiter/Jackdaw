@@ -43,6 +43,8 @@ fun Playlists(
         }
     }
 
+    Log.d("PlaylistDetailLog", "ThisHappened")
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

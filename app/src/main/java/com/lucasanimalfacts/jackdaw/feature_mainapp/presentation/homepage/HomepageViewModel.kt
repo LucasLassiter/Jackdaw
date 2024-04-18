@@ -45,7 +45,8 @@ class HomepageViewModel @Inject constructor(
     private suspend fun getRandomSongs() {
         _state.value =  state.value.copy(
             randomSongs = useCaseWrapper.getRandomSongs(username = "lucas", password = "ZPvl(<D-W6rj[Cb\"", version = "1.16.1", appName = "jackdaw", responseType = "json"),
-            starred = useCaseWrapper.getStarred(username = "lucas", password = "ZPvl(<D-W6rj[Cb\"", version = "1.16.1", appName = "jackdaw", responseType = "json")
+            starred = useCaseWrapper.getStarred(username = "lucas", password = "ZPvl(<D-W6rj[Cb\"", version = "1.16.1", appName = "jackdaw", responseType = "json"),
+            playlists = useCaseWrapper.getPlaylists(username = "lucas", password = "ZPvl(<D-W6rj[Cb\"", version = "1.16.1", appName = "jackdaw", responseType = "json")
         )
     }
 }

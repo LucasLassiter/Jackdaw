@@ -31,12 +31,13 @@ fun PlaylistComponent (
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier.clickable { onClick() }
+        modifier = modifier.clickable { onClick() }
             .fillMaxSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
+
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
