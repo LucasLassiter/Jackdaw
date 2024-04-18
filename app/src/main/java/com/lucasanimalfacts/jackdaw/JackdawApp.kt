@@ -1,6 +1,7 @@
 package com.lucasanimalfacts.jackdaw
 
 import android.app.Application
+import android.util.Log
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
